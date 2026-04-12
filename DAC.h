@@ -14,6 +14,7 @@
 #define mosiPin     17
 #define misoPin     18
 #define ldacPin     14
+#define lockPin     21
 
 SPIClass *hspi = new SPIClass(HSPI);
 
@@ -26,6 +27,7 @@ uint8_t redBright=50,greenBright=50,blueBright=50,ildaSize=100;
 void initDAC() {
   pinMode(csPin,OUTPUT); digitalWrite(csPin,HIGH);
   pinMode(ldacPin,OUTPUT); digitalWrite(ldacPin,HIGH);
+  pinMode(lockPin,OUTPUT); digitalWrite(lockPin,HIGH);
 
   hspi->begin(sckPin,misoPin,mosiPin,csPin);
   hspi->beginTransaction(SPISettings(20000000,MSBFIRST,SPI_MODE0));

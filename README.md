@@ -13,7 +13,10 @@ ESP32-S3 based ILDA Player
 * GPIO 4 - Red
 * GPIO 5 - Green
 * GPIO 6 - Blue
-* GPIO 7 - Shutter
+#### Shutter
+* GPIO 7
+#### Interlock Relais
+* GPIO 21
 #### SD Card
 * GPIO 11 - MOSI
 * GPIO 12 - SCK
