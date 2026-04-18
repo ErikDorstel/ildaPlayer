@@ -9,7 +9,7 @@ void initWLAN() {
 
 void wlanWorker() {
   static uint32_t wlanTimer=10000,dacAvailableOld;
-  if (millis()>=wlanTimer) { wlanTimer=millis()+10000;
+  if (millis()>=wlanTimer) { wlanTimer=millis()+1000;
     Serial.print("Local IP: "); Serial.println(WiFi.localIP());
     Serial.print("Heap Total: "); Serial.print(ESP.getHeapSize());
     Serial.print("   Free: "); Serial.print(ESP.getFreeHeap());
@@ -18,4 +18,5 @@ void wlanWorker() {
     Serial.print("   Free: "); Serial.print(ESP.getFreePsram());
     Serial.print("   Used: "); Serial.println(ESP.getPsramSize()-ESP.getFreePsram());
     Serial.print("DAC available: "); Serial.println(dacAvailable-dacAvailableOld);
-    dacAvailableOld=dacAvailable; } }
+    dacAvailableOld=dacAvailable;
+    getADC(); } }

@@ -85,6 +85,7 @@ function onSelectGreen(event) { requestAJAX("setGreen?green="+event.value); }
 function onSelectBlue(event) { requestAJAX("setBlue?blue="+event.value); }
 function onSelectSize(event) { requestAJAX("setSize?size="+event.value); }
 function onReloadIlda(event) { if (id("selectDir").selectedOptions[0]) { name=id("selectDir").selectedOptions[0].value; if (name.toLowerCase().endsWith(".ild")) { requestAJAX("getFile?file="+name); } } }
+function onGame(event) { requestAJAX("getGame"); }
 function id(id) { return document.getElementById(id); }
 </script></head>
 <body onload="webUIinit();">
@@ -95,6 +96,7 @@ function id(id) { return document.getElementById(id); }
 <select size="10" id="selectBlue" onchange="onSelectBlue(this);"></select>
 <select size="10" id="selectSize" onchange="onSelectSize(this);"></select>
 <button type="button" onclick="onReloadIlda();" class="top">Reload</button>
+<button type="button" onclick="onGame();" class="top">Game</button>
 </body></html>)";
 
 void handleRoot() { server.send(200,"text/html",rootIndex); }
@@ -105,6 +107,7 @@ void setRed() { server.send(200,"text/html",""); redBright=server.arg("red").toI
 void setGreen() { server.send(200,"text/html",""); greenBright=server.arg("green").toInt(); }
 void setBlue() { server.send(200,"text/html",""); blueBright=server.arg("blue").toInt(); }
 void setSize() { server.send(200,"text/html",""); ildaSize=server.arg("size").toInt(); }
+void getGame() { server.send(200,"text/html",""); startGame(); }
 
 void initServer() {
   server.on("/",handleRoot);
@@ -115,6 +118,7 @@ void initServer() {
   server.on("/setGreen",setGreen);
   server.on("/setBlue",setBlue);
   server.on("/setSize",setSize);
+  server.on("/getGame",getGame);
   server.begin(); }
 
 void serverWorker() {

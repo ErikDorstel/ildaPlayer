@@ -11,7 +11,7 @@ void initSD() {
 
 void readILDA(String value) {
   Serial.print("Get File: "); Serial.println(value);
-  colorOff();
+  laserOff();
   ildaCount=0; paletteCount=0; dacCount=0;
   initPalette();
   file=SD.open(value);
@@ -76,7 +76,8 @@ void readILDA(String value) {
             if (bitRead(ilda[ildaCount].s,6)) { ilda[ildaCount].r=0; ilda[ildaCount].g=0; ilda[ildaCount].b=0; }
             ildaCount++; } } } } }
   Serial.print("Points: "); Serial.println(ildaCount);
-  file.close(); }
+  file.close();
+  laserOn(); }
 
 String readDir(String value) {
   Serial.print("Get Dir: "); Serial.println(value);

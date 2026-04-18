@@ -27,16 +27,18 @@ uint8_t redBright=50,greenBright=50,blueBright=50,ildaSize=100;
 void initDAC() {
   pinMode(csPin,OUTPUT); digitalWrite(csPin,HIGH);
   pinMode(ldacPin,OUTPUT); digitalWrite(ldacPin,HIGH);
-  pinMode(lockPin,OUTPUT); digitalWrite(lockPin,HIGH);
+  pinMode(lockPin,OUTPUT); digitalWrite(lockPin,LOW);
+  pinMode(shutterPin,OUTPUT); digitalWrite(shutterPin,LOW);
 
   hspi->begin(sckPin,misoPin,mosiPin,csPin);
   hspi->beginTransaction(SPISettings(20000000,MSBFIRST,SPI_MODE0));
 
   ledcSetup(channelRed,freq,depth); ledcAttachPin(ledPinRed,channelRed); ledcWrite(channelRed,0);
   ledcSetup(channelGreen,freq,depth); ledcAttachPin(ledPinGreen,channelGreen); ledcWrite(channelGreen,0);
-  ledcSetup(channelBlue,freq,depth); ledcAttachPin(ledPinBlue,channelBlue); ledcWrite(channelBlue,0);
-  pinMode(shutterPin,OUTPUT); digitalWrite(shutterPin,HIGH); }
+  ledcSetup(channelBlue,freq,depth); ledcAttachPin(ledPinBlue,channelBlue); ledcWrite(channelBlue,0); }
 
+void laserOn() { digitalWrite(lockPin,HIGH); ledcWrite(channelRed,0); ledcWrite(channelGreen,0); ledcWrite(channelBlue,0); digitalWrite(shutterPin,HIGH); }
+void laserOff() { digitalWrite(lockPin,LOW); ledcWrite(channelRed,0); ledcWrite(channelGreen,0); ledcWrite(channelBlue,0); digitalWrite(shutterPin,LOW); }
 void colorOff() { ledcWrite(channelRed,0); ledcWrite(channelGreen,0); ledcWrite(channelBlue,0); }
 
 void dacWorker() {
