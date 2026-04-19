@@ -18,8 +18,4 @@ void getADC() {
   adc.x=(adc.x+adc1_get_raw(ADC1_CHANNEL_0)-adc.xCal)/2;
   adc.y=(adc.y+adc1_get_raw(ADC1_CHANNEL_1)-adc.yCal)/2;
   adc.z=(adc.z+adc1_get_raw(ADC1_CHANNEL_7)-adc.zCal)/2;
-  adc.t=!digitalRead(9);
-  Serial.println(adc.x);
-  Serial.println(adc.y);
-  Serial.println(adc.z);
-  Serial.println(adc.t); }
+  adc.t=!digitalRead(9); }

@@ -58,9 +58,9 @@ void readILDA(String value) {
             ilda[ildaCount].x=((int16_t)((float)ildaSize*(int16_t)((buffer[0]<<8)+buffer[1])/100.0f)+32768)>>4;
             ilda[ildaCount].y=((int16_t)((float)ildaSize*(int16_t)((buffer[2]<<8)+buffer[3])/100.0f)+32768)>>4;
             ilda[ildaCount].s=buffer[6];
-            ilda[ildaCount].b=buffer[7];
-            ilda[ildaCount].g=buffer[8];
-            ilda[ildaCount].r=buffer[9];
+            ilda[ildaCount].b=(float)buffer[7]*(float)blueBright/(float)100;
+            ilda[ildaCount].g=(float)buffer[8]*(float)greenBright/(float)100;
+            ilda[ildaCount].r=(float)buffer[9]*(float)redBright/(float)100;
             if (bitRead(ilda[ildaCount].s,6)) { ilda[ildaCount].r=0; ilda[ildaCount].g=0; ilda[ildaCount].b=0; }
             ildaCount++; } } }
       if (format==5) {
@@ -70,9 +70,9 @@ void readILDA(String value) {
             ilda[ildaCount].x=((int16_t)((float)ildaSize*(int16_t)((buffer[0]<<8)+buffer[1])/100.0f)+32768)>>4;
             ilda[ildaCount].y=((int16_t)((float)ildaSize*(int16_t)((buffer[2]<<8)+buffer[3])/100.0f)+32768)>>4;
             ilda[ildaCount].s=buffer[4];
-            ilda[ildaCount].b=buffer[5];
-            ilda[ildaCount].g=buffer[6];
-            ilda[ildaCount].r=buffer[7];
+            ilda[ildaCount].b=(float)buffer[5]*(float)blueBright/(float)100;
+            ilda[ildaCount].g=(float)buffer[6]*(float)greenBright/(float)100;
+            ilda[ildaCount].r=(float)buffer[7]*(float)redBright/(float)100;
             if (bitRead(ilda[ildaCount].s,6)) { ilda[ildaCount].r=0; ilda[ildaCount].g=0; ilda[ildaCount].b=0; }
             ildaCount++; } } } } }
   Serial.print("Points: "); Serial.println(ildaCount);

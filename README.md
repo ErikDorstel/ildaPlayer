@@ -22,10 +22,5 @@ ESP32-S3 based ILDA Player
 * GPIO 12 - SCK
 * GPIO 13 - MISO
 * GPIO 15 - CS
-#### Joystick
-* GPIO 1 - X
-* GPIO 2 - Y
-* GPIO 8 - Z
-* GPIO 9 - Trigger
 #### Development Hardware
 ![IMAGE ALT TEXT HERE](documentation/ildaPlayer_a.png)

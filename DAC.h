@@ -56,4 +56,4 @@ void dacWorker() {
     digitalWrite(csPin,HIGH);
     digitalWrite(ldacPin,LOW); digitalWrite(ldacPin,HIGH);
     dacCount++;
-    if (dacCount>ildaCount) { dacCount=0; } } else { dacAvailable++; } }
+    if (dacCount>=ildaCount) { dacCount=0; } } else { dacAvailable++; } }
