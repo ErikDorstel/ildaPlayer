@@ -44,6 +44,6 @@ void startGame() {
   while (true) {
     ildaCount=0; dacCount=0;
     getADC();
-    doLine(-32768,adc.x*10,32767,-adc.x*10,255,255,255);
-    doLine(32767,-adc.x*10,-32768,adc.x*10,0,0,0);
+    doLine(-32768,(adc.x*10)+(adc.y*5),32767,(-adc.x*10)+(adc.y*5),255,255,255);
+    doLine(32767,(-adc.x*10)+(adc.y*5),-32768,(adc.x*10)+(adc.y*5),0,0,0);
     do { dacWorker(); } while (dacCount>0); } }

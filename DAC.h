@@ -37,9 +37,9 @@ void initDAC() {
   ledcSetup(channelGreen,freq,depth); ledcAttachPin(ledPinGreen,channelGreen); ledcWrite(channelGreen,0);
   ledcSetup(channelBlue,freq,depth); ledcAttachPin(ledPinBlue,channelBlue); ledcWrite(channelBlue,0); }
 
-void laserOn() { digitalWrite(lockPin,HIGH); ledcWrite(channelRed,0); ledcWrite(channelGreen,0); ledcWrite(channelBlue,0); digitalWrite(shutterPin,HIGH); }
-void laserOff() { digitalWrite(lockPin,LOW); ledcWrite(channelRed,0); ledcWrite(channelGreen,0); ledcWrite(channelBlue,0); digitalWrite(shutterPin,LOW); }
 void colorOff() { ledcWrite(channelRed,0); ledcWrite(channelGreen,0); ledcWrite(channelBlue,0); }
+void laserOn() { digitalWrite(lockPin,HIGH); colorOff(); digitalWrite(shutterPin,HIGH); }
+void laserOff() { digitalWrite(lockPin,LOW); colorOff(); digitalWrite(shutterPin,LOW); }
 
 void dacWorker() {
   static uint32_t dacTimer;
