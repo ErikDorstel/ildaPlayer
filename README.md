@@ -29,3 +29,5 @@ ESP32-S3 based ILDA Player
 * GPIO 9 - Trigger
 #### Development Hardware
 ![IMAGE ALT TEXT HERE](documentation/ildaPlayer_a.png)
+#### Joystick
+![IMAGE ALT TEXT HERE](documentation/ildaPlayer_b.png)
