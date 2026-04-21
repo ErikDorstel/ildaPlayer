@@ -1,3 +1,6 @@
+struct shipStruct { int16_t posX; int16_t posY; int16_t turnX; int16_t turnY; } ship;
+int16_t shipData[][5]={{0,1000,0,255,0},{500,-1000,0,255,0},{-500,-1000,0,255,0},{0,1000,0,255,0}};
+
 void setPixel(int16_t x,int16_t y,uint8_t r,uint8_t g,uint8_t b) {
   ilda[ildaCount].x=((int16_t)((float)ildaSize*(int16_t)(x)/100.0f)+32768)>>4;
   ilda[ildaCount].y=((int16_t)((float)ildaSize*(int16_t)(y)/100.0f)+32768)>>4;
@@ -40,10 +43,17 @@ void doLine(int xstart, int ystart, int xend, int yend,uint8_t r,uint8_t g,uint8
     setPixel(x, y,r,g,b); }
   setPixel(xend, yend,r,g,b); }
 
+void doObject(int16_t object[][5]) {
+  for (int n=0;n<3;n++) { doLine(ship.posX+object[n][0],ship.posY+object[n][1],ship.posX+object[n+1][0],ship.posY+object[n+1][1],object[n][2],object[n][3],object[n][4]); } }
+
 void startGame() {
   while (true) {
     ildaCount=0; dacCount=0;
     getADC();
-    doLine(-32768,(adc.x*10)+(adc.y*5),32767,(-adc.x*10)+(adc.y*5),255,255,255);
-    doLine(32767,(-adc.x*10)+(adc.y*5),-32768,(adc.x*10)+(adc.y*5),0,0,0);
+    doObject(shipData);
+    if (adc.y>100) { ship.turnY+=1; }
+    if (adc.y<-100) { ship.turnY-=1; }
+    if (ship.turnY<0) { ship.turnY=0; }
+    if (ship.turnY>200) { ship.turnY=200; }
+    if (ship.posY+ship.turnY<32767-1000) { ship.posY+=ship.turnY; }
     do { dacWorker(); } while (dacCount>0); } }
