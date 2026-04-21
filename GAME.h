@@ -1,5 +1,6 @@
-struct shipStruct { int16_t posX; int16_t posY; int16_t turnX; int16_t turnY; } ship;
-int16_t shipData[][5]={{0,1000,0,255,0},{500,-1000,0,255,0},{-500,-1000,0,255,0},{0,1000,0,255,0}};
+struct shipStruct { float posX; float posY; float moveX; float moveY; float throttle; float turn; } ship;
+int16_t shipData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,255,0},{-500,-1000,0,255,0},{0,1000,0,255,0}};
+int16_t shipEngineData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,255,0},{-500,-1000,255,0,0},{0,1000,0,255,0}};
 
 void setPixel(int16_t x,int16_t y,uint8_t r,uint8_t g,uint8_t b) {
   ilda[ildaCount].x=((int16_t)((float)ildaSize*(int16_t)(x)/100.0f)+32768)>>4;
@@ -11,7 +12,8 @@ void setPixel(int16_t x,int16_t y,uint8_t r,uint8_t g,uint8_t b) {
 
 int signum(int x) { return x > 0 ? +100 : x < 0 ? -100 : 0; }
 
-void doLine(int xstart, int ystart, int xend, int yend,uint8_t r,uint8_t g,uint8_t b) {
+void doLine(int xend, int yend,uint8_t r,uint8_t g,uint8_t b) {
+  static int xstart,ystart;
   int x, y, t, dx, dy, incx, incy, pdx, pdy, ddx, ddy, deltaslowdirection, deltafastdirection, err;
   dx = xend - xstart;
   dy = yend - ystart;
@@ -41,19 +43,34 @@ void doLine(int xstart, int ystart, int xend, int yend,uint8_t r,uint8_t g,uint8
       x += pdx;
       y += pdy; }
     setPixel(x, y,r,g,b); }
-  setPixel(xend, yend,r,g,b); }
+  setPixel(xend, yend,r,g,b);
+  xstart=xend; ystart=yend; }
 
 void doObject(int16_t object[][5]) {
-  for (int n=0;n<3;n++) { doLine(ship.posX+object[n][0],ship.posY+object[n][1],ship.posX+object[n+1][0],ship.posY+object[n+1][1],object[n][2],object[n][3],object[n][4]); } }
+  for (int n=1;n<object[0][0];n++) {
+    int endX=cos(ship.turn)*object[n][0]-sin(ship.turn)*object[n][1];
+    int endY=sin(ship.turn)*object[n][0]+cos(ship.turn)*object[n][1];
+    doLine(ship.posX+endX,ship.posY+endY,object[n][2],object[n][3],object[n][4]); } }
 
 void startGame() {
   while (true) {
     ildaCount=0; dacCount=0;
     getADC();
-    doObject(shipData);
-    if (adc.y>100) { ship.turnY+=1; }
-    if (adc.y<-100) { ship.turnY-=1; }
-    if (ship.turnY<0) { ship.turnY=0; }
-    if (ship.turnY>200) { ship.turnY=200; }
-    if (ship.posY+ship.turnY<32767-1000) { ship.posY+=ship.turnY; }
+    if (adc.x>100) { ship.turn-=0.01; }
+    if (adc.x<-100) { ship.turn+=0.01; }
+    if (adc.y>100) { ship.throttle+=0.1; }
+    else if (adc.y<-100) { ship.throttle-=0.1; }
+    else { ship.throttle-=0.05; }
+    if (ship.throttle<0) { ship.throttle=0; }
+    if (ship.throttle>100) { ship.throttle=100; }
+    float angle=ship.turn+0.785398;
+    ship.moveX=cos(angle)*ship.throttle-sin(angle)*ship.throttle;
+    ship.moveY=sin(angle)*ship.throttle+cos(angle)*ship.throttle;
+    ship.posX+=ship.moveX;
+    ship.posY+=ship.moveY;
+    if (ship.posX>32767-1100) { ship.posX=32767-1100; }
+    if (ship.posX<-32768+1100) { ship.posX=-32768+1100; }
+    if (ship.posY>32767-1100) { ship.posY=32767-1100; }
+    if (ship.posY<-32768+1100) { ship.posY=-32768+1100; }
+    if (adc.y>100) { doObject(shipEngineData); } else { doObject(shipData); }
     do { dacWorker(); } while (dacCount>0); } }
