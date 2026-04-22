@@ -12,15 +12,14 @@ void setPixel(int16_t x,int16_t y,uint8_t r,uint8_t g,uint8_t b) {
   ilda[ildaCount].b=(float)b*(float)blueBright/(float)100;
   ildaCount++; }
 
-int signum(int x) { return x > 0 ? +100 : x < 0 ? -100 : 0; }
-
 void doLine(int xend, int yend,uint8_t r,uint8_t g,uint8_t b) {
   static int xstart,ystart;
-  int x, y, t, dx, dy, incx, incy, pdx, pdy, ddx, ddy, deltaslowdirection, deltafastdirection, err;
+  int x, y, t, dx, dy, incx, incy, pdx, pdy, ddx, ddy, deltaslowdirection, deltafastdirection, err, step=200;
+  if (r==0 && g==0 && b==0) { step=1000; }
   dx = xend - xstart;
   dy = yend - ystart;
-  incx = signum(dx);
-  incy = signum(dy);
+  incx = dx > 0 ? step : dx < 0 ? -step : 0;
+  incy = dy > 0 ? step : dy < 0 ? -step : 0;
   if (dx < 0) dx = -dx;
   if (dy < 0) dy = -dy;
   if (dx > dy) {
@@ -35,7 +34,7 @@ void doLine(int xend, int yend,uint8_t r,uint8_t g,uint8_t b) {
   y = ystart;
   err = deltafastdirection / 2;
   setPixel(x, y,r,g,b);
-  for (t = 0; t < deltafastdirection; t+=100) {
+  for (t = 0; t < deltafastdirection; t+=step) {
     err -= deltaslowdirection;
     if (err < 0) {
       err += deltafastdirection;
