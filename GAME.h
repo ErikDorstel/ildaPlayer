@@ -1,6 +1,9 @@
-struct shipStruct { float posX; float posY; float moveX; float moveY; float throttle; float turn; } ship;
+struct shipStruct { float posX=-5000; float posY; float moveX; float moveY; float throttle; float turn; } ship;
 int16_t shipData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,255,0},{-500,-1000,0,255,0},{0,1000,0,255,0}};
 int16_t shipEngineData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,255,0},{-500,-1000,255,0,0},{0,1000,0,255,0}};
+struct enemyStruct { float posX=5000; float posY; float moveX; float moveY; float throttle; float turn; } enemy;
+int16_t enemyData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,0,255},{-500,-1000,0,0,255},{0,1000,0,0,255}};
+int16_t enemyEngineData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,0,255},{-500,-1000,255,0,0},{0,1000,0,0,255}};
 struct phaserStruct { float posX; float posY; float moveX; float moveY; float throttle; float turn; } phaser[20];
 int16_t phaserData[][5]={{3,0,0,0,0},{0,1000,0,0,0},{0,2000,255,0,0}};
 
@@ -59,10 +62,13 @@ void startGame() {
     ildaCount=0; dacCount=0;
     getADC();
 
-    if (adc.x>100) { ship.turn-=0.01; }
-    if (adc.x<-100) { ship.turn+=0.01; }
-    if (adc.y>100) { ship.throttle+=0.1; }
-    else if (adc.y<-100) { ship.throttle-=0.1; }
+    doLine(0,-5000,0,0,0);
+    doLine(0,5000,255,0,0);
+
+    if (adc.x>500) { ship.turn-=0.01; }
+    if (adc.x<-500) { ship.turn+=0.01; }
+    if (adc.y>500) { ship.throttle+=0.1; }
+    else if (adc.y<-500) { ship.throttle-=0.1; }
     else { ship.throttle-=0.05; }
     if (ship.throttle<0) { ship.throttle=0; }
     if (ship.throttle>100) { ship.throttle=100; }
@@ -78,7 +84,9 @@ void startGame() {
     if (adc.y>100) { doObject(shipEngineData,ship.posX,ship.posY,ship.turn); }
     else { doObject(shipData,ship.posX,ship.posY,ship.turn); }
 
-    if (adc.t && millis()>triggerTimer) { triggerTimer=millis()+1000;
+    doObject(enemyData,enemy.posX,enemy.posY,enemy.turn);
+
+    if (adc.t && millis()>triggerTimer) { triggerTimer=millis()+500;
       for (int n=0;n<20;n++) { if (phaser[n].throttle==0) {
         phaser[n].posX=ship.posX; phaser[n].posY=ship.posY;
         phaser[n].moveX=cos(angle)*200-sin(angle)*200;
