@@ -2,7 +2,7 @@ struct shipStruct { float posX; float posY; float moveX; float moveY; float thro
 int16_t shipData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,255,0},{-500,-1000,0,255,0},{0,1000,0,255,0}};
 int16_t shipEngineData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,255,0},{-500,-1000,255,0,0},{0,1000,0,255,0}};
 struct asteroidStruct { float posX; float posY=10000; float moveX; float moveY; float throttle; float turn; } asteroid;
-int16_t asteroidData[][5]={{10,0,0,0,0},{0,2000,0,0,0},{1500,1000,0,0,255},{1800,-500,0,0,255},{500,-2000,0,0,255},{-800,-1900,0,0,255},{-500,-1000,0,0,255},{-1800,500,0,0,255},{-600,1400,0,0,255},{0,200,0,0,255}};
+int16_t asteroidData[][5]={{10,0,0,0,0},{0,2000,0,0,0},{1500,1000,0,0,255},{2000,-500,0,0,255},{500,-2000,0,0,255},{-800,-1900,0,0,255},{-1800,-1000,0,0,255},{-2000,500,0,0,255},{-600,1400,0,0,255},{0,2000,0,0,255}};
 struct phaserStruct { float posX; float posY; float moveX; float moveY; float throttle; float turn; } phaser[20];
 int16_t phaserData[][5]={{3,0,0,0,0},{0,1000,0,0,0},{0,2000,255,0,0}};
 
@@ -80,7 +80,23 @@ void startGame() {
     if (adc.y>100) { doObject(shipEngineData,ship.posX,ship.posY,ship.turn); }
     else { doObject(shipData,ship.posX,ship.posY,ship.turn); }
 
+    if (asteroid.throttle==0) {
+      float angle1=0.017453f*random(0,360);
+      asteroid.moveX=cos(angle1)*50-sin(angle1)*50;
+      asteroid.moveY=sin(angle1)*50+cos(angle1)*50;
+      if (asteroid.posX>32767-2100 && asteroid.moveX>0) { asteroid.moveX=-asteroid.moveX; }
+      else if (asteroid.posX<-32768+2100 && asteroid.moveX<0) { asteroid.moveX=-asteroid.moveX; }
+      if (asteroid.posY>32767-2100 && asteroid.moveY>0) { asteroid.moveY=-asteroid.moveY; }
+      else if (asteroid.posY<-32768+2100 && asteroid.moveY<0) { asteroid.moveY=-asteroid.moveY; }
+      asteroid.throttle=1; }
     doObject(asteroidData,asteroid.posX,asteroid.posY,asteroid.turn);
+    asteroid.turn+=0.01;
+    asteroid.posX+=asteroid.moveX;
+    asteroid.posY+=asteroid.moveY;
+    if (asteroid.posX>32767-2100) { asteroid.throttle=0; }
+    else if (asteroid.posX<-32768+2100) { asteroid.throttle=0; }
+    if (asteroid.posY>32767-2100) { asteroid.throttle=0; }
+    else if (asteroid.posY<-32768+2100) { asteroid.throttle=0; }
 
     if (adc.t && millis()>triggerTimer) { triggerTimer=millis()+500;
       for (int n=0;n<20;n++) { if (phaser[n].throttle==0) {
