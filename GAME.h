@@ -1,7 +1,7 @@
 struct shipStruct { float posX; float posY; float moveX; float moveY; float throttle; float turn; } ship;
 int16_t shipData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,255,0},{-500,-1000,0,255,0},{0,1000,0,255,0}};
 int16_t shipEngineData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,255,0},{-500,-1000,255,0,0},{0,1000,0,255,0}};
-struct asteroidStruct { float posX; float posY=10000; float moveX; float moveY; float throttle; float turn; } asteroid[4];
+struct asteroidStruct { float posX; float posY; float moveX; float moveY; float throttle; float turn; float turnSpeed; } asteroid[4];
 int16_t asteroidData[][5]={{10,0,0,0,0},{0,2000,0,0,0},{1500,1000,0,0,255},{2000,-500,0,0,255},{500,-2000,0,0,255},{-800,-1900,0,0,255},{-1800,-1000,0,0,255},{-2000,500,0,0,255},{-600,1400,0,0,255},{0,2000,0,0,255}};
 struct phaserStruct { float posX; float posY; float moveX; float moveY; float throttle; float turn; } phaser[20];
 int16_t phaserData[][5]={{3,0,0,0,0},{0,1000,0,0,0},{0,2000,255,0,0}};
@@ -55,9 +55,17 @@ void doObject(int16_t object[][5],float posX,float posY,float turn) {
     int endY=sin(turn)*object[n][0]+cos(turn)*object[n][1];
     doLine(posX+endX,posY+endY,object[n][2],object[n][3],object[n][4]); } }
 
+void initGame() {
+  asteroid[0].posX=-20000; asteroid[0].posY=-20000; asteroid[0].turnSpeed=0.01;
+  asteroid[1].posX=20000; asteroid[1].posY=-20000; asteroid[1].turnSpeed=0.02;
+  asteroid[2].posX=-20000; asteroid[2].posY=20000; asteroid[2].turnSpeed=-0.01;
+  asteroid[3].posX=20000; asteroid[3].posY=20000; asteroid[3].turnSpeed=-0.02; }
+
 void startGame() {
   static uint32_t triggerTimer;
+  static bool initGameFlag;
   while (true) {
+    if (initGameFlag==0) { initGameFlag=1; initGame(); }
     ildaCount=0; dacCount=0;
     getADC();
 
@@ -91,7 +99,7 @@ void startGame() {
         if (asteroid[n].posY>32767-2100 && asteroid[n].moveY>0) { asteroid[n].moveY=-asteroid[n].moveY; }
         else if (asteroid[n].posY<-32768+2100 && asteroid[n].moveY<0) { asteroid[n].moveY=-asteroid[n].moveY; } }
       doObject(asteroidData,asteroid[n].posX,asteroid[n].posY,asteroid[n].turn);
-      asteroid[n].turn+=0.01;
+      asteroid[n].turn+=asteroid[n].turnSpeed;
       asteroid[n].posX+=asteroid[n].moveX;
       asteroid[n].posY+=asteroid[n].moveY;
       if (asteroid[n].posX>32767-2100) { asteroid[n].throttle=0; }
