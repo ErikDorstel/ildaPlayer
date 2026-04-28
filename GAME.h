@@ -63,9 +63,8 @@ void initGame() {
 
 void startGame() {
   static uint32_t triggerTimer;
-  static bool initGameFlag;
+  initGame();
   while (true) {
-    if (initGameFlag==0) { initGameFlag=1; initGame(); }
     ildaCount=0; dacCount=0;
     getADC();
 
