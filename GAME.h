@@ -68,11 +68,11 @@ void startGame() {
     ildaCount=0; dacCount=0;
     getADC();
 
-    if (adc.x>500) { ship.turn-=0.01; }
-    if (adc.x<-500) { ship.turn+=0.01; }
-    if (adc.y>500) { ship.throttle+=0.1; }
-    else if (adc.y<-500) { ship.throttle-=0.1; }
-    else { ship.throttle-=0.05; }
+    if (adc.x>500) { ship.turn-=0.1; }
+    if (adc.x<-500) { ship.turn+=0.1; }
+    if (adc.y>500) { ship.throttle+=3; }
+    else if (adc.y<-500) { ship.throttle-=3; }
+    else { ship.throttle-=0.5; }
     if (ship.throttle<0) { ship.throttle=0; }
     if (ship.throttle>100) { ship.throttle=100; }
     float angle=ship.turn+0.785398;
@@ -106,7 +106,7 @@ void startGame() {
       if (asteroid[n].posY>32767-2100) { asteroid[n].throttle=0; }
       else if (asteroid[n].posY<-32768+2100) { asteroid[n].throttle=0; } }
 
-    if (adc.t && millis()>triggerTimer) { triggerTimer=millis()+500;
+    if (adc.t && millis()>triggerTimer) { triggerTimer=millis()+1000;
       for (int n=0;n<20;n++) { if (phaser[n].throttle==0) {
         phaser[n].posX=ship.posX; phaser[n].posY=ship.posY;
         phaser[n].moveX=cos(angle)*200-sin(angle)*200;
