@@ -22,7 +22,8 @@ const char *rootIndex=R"(
   #selectSize { height:40em; }
   #selectSize option { text-align:right; padding-right:1em; }
   .right { float:right; padding-right:1em; }
-  .top { vertical-align:top; }
+  tr { vertical-align:top; }
+  li { padding-bottom:1em; }
 </style>
 <script>
 function webUIinit() {
@@ -89,14 +90,19 @@ function onGame(event) { requestAJAX("getGame"); }
 function id(id) { return document.getElementById(id); }
 </script></head>
 <body onload="webUIinit();">
-<select size="10" id="selectDir" onchange="onSelectDir(this);"></select>
-<select size="10" id="selectSpeed" onchange="onSelectSpeed(this);"></select>
-<select size="10" id="selectRed" onchange="onSelectRed(this);"></select>
-<select size="10" id="selectGreen" onchange="onSelectGreen(this);"></select>
-<select size="10" id="selectBlue" onchange="onSelectBlue(this);"></select>
-<select size="10" id="selectSize" onchange="onSelectSize(this);"></select>
-<button type="button" onclick="onReloadIlda();" class="top">Reload</button>
-<button type="button" onclick="onGame();" class="top">Game</button>
+<table><tr><td>
+  <select size="10" id="selectDir" onchange="onSelectDir(this);"></select>
+  <select size="10" id="selectSpeed" onchange="onSelectSpeed(this);"></select>
+  <select size="10" id="selectRed" onchange="onSelectRed(this);"></select>
+  <select size="10" id="selectGreen" onchange="onSelectGreen(this);"></select>
+  <select size="10" id="selectBlue" onchange="onSelectBlue(this);"></select>
+  <select size="10" id="selectSize" onchange="onSelectSize(this);"></select>
+</td><td>
+  <ul>
+    <li><button type="button" onclick="onReloadIlda();">Reload</button></li>
+    <li><button type="button" onclick="onGame();">Game</button></li>
+  </ul>
+</td></tr></table>
 </body></html>)";
 
 void handleRoot() { server.send(200,"text/html",rootIndex); }
