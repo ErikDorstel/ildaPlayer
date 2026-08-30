@@ -12,7 +12,11 @@ void setup() {
   initDAC();
   initSD();
   initWLAN();
-  initServer();
-  readILDA("/3D Tour/Kugel-3d.ild"); }
+  initServer(); }
+  //readILDA("/3D Tour/Kugel-3d.ild"); }
 
-void loop() { dacWorker(); serverWorker(); wlanWorker(); }
+void loop() {
+  if (game==1) { laserOn(); initGame(); game=2; }
+  if (game==2) { doGame(); }
+  serverWorker();
+  wlanWorker(); }

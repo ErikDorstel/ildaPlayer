@@ -61,63 +61,74 @@ void initGame() {
   asteroid[2].posX=-20000; asteroid[2].posY=20000; asteroid[2].turnSpeed=-0.01;
   asteroid[3].posX=20000; asteroid[3].posY=20000; asteroid[3].turnSpeed=-0.02; }
 
-void startGame() {
+void doGame() {
   static uint32_t triggerTimer;
-  initGame();
-  while (true) {
-    ildaCount=0; dacCount=0;
-    getADC();
+  ildaCount=0;
+  getADC();
 
-    if (adc.x>500) { ship.turn-=0.1; }
-    if (adc.x<-500) { ship.turn+=0.1; }
-    if (adc.y>500) { ship.throttle+=3; }
-    else if (adc.y<-500) { ship.throttle-=3; }
-    else { ship.throttle-=0.5; }
-    if (ship.throttle<0) { ship.throttle=0; }
-    if (ship.throttle>100) { ship.throttle=100; }
-    float angle=ship.turn+0.785398;
-    ship.moveX=cos(angle)*ship.throttle-sin(angle)*ship.throttle;
-    ship.moveY=sin(angle)*ship.throttle+cos(angle)*ship.throttle;
-    ship.posX+=ship.moveX;
-    ship.posY+=ship.moveY;
-    if (ship.posX>32767-1100) { ship.posX=32767-1100; }
-    else if (ship.posX<-32768+1100) { ship.posX=-32768+1100; }
-    if (ship.posY>32767-1100) { ship.posY=32767-1100; }
-    else if (ship.posY<-32768+1100) { ship.posY=-32768+1100; }
-    if (adc.y>100) { doObject(shipEngineData,ship.posX,ship.posY,ship.turn); }
-    else { doObject(shipData,ship.posX,ship.posY,ship.turn); }
+  if (adc.x>500) { ship.turn-=0.1; }
+  if (adc.x<-500) { ship.turn+=0.1; }
+  if (adc.y>500) { ship.throttle+=3; }
+  else if (adc.y<-500) { ship.throttle-=3; }
+  else { ship.throttle-=0.5; }
+  if (ship.throttle<0) { ship.throttle=0; }
+  if (ship.throttle>100) { ship.throttle=100; }
+  float angle=ship.turn+0.785398;
+  ship.moveX=cos(angle)*ship.throttle-sin(angle)*ship.throttle;
+  ship.moveY=sin(angle)*ship.throttle+cos(angle)*ship.throttle;
+  ship.posX+=ship.moveX;
+  ship.posY+=ship.moveY;
+  if (ship.posX>32767-1100) { ship.posX=32767-1100; }
+  else if (ship.posX<-32768+1100) { ship.posX=-32768+1100; }
+  if (ship.posY>32767-1100) { ship.posY=32767-1100; }
+  else if (ship.posY<-32768+1100) { ship.posY=-32768+1100; }
+  if (adc.y>100) { doObject(shipEngineData,ship.posX,ship.posY,ship.turn); }
+  else { doObject(shipData,ship.posX,ship.posY,ship.turn); }
 
-    for (int n=0;n<4;n++) {
-      if (asteroid[n].throttle==0) {
-        float angleA=0.017453f*random(0,360);
-        asteroid[n].throttle=random(40,70);
-        asteroid[n].moveX=cos(angleA)*asteroid[n].throttle-sin(angleA)*asteroid[n].throttle;
-        asteroid[n].moveY=sin(angleA)*asteroid[n].throttle+cos(angleA)*asteroid[n].throttle;
-        if (asteroid[n].posX>32767-2100 && asteroid[n].moveX>0) { asteroid[n].moveX=-asteroid[n].moveX; }
-        else if (asteroid[n].posX<-32768+2100 && asteroid[n].moveX<0) { asteroid[n].moveX=-asteroid[n].moveX; }
-        if (asteroid[n].posY>32767-2100 && asteroid[n].moveY>0) { asteroid[n].moveY=-asteroid[n].moveY; }
-        else if (asteroid[n].posY<-32768+2100 && asteroid[n].moveY<0) { asteroid[n].moveY=-asteroid[n].moveY; } }
-      doObject(asteroidData,asteroid[n].posX,asteroid[n].posY,asteroid[n].turn);
-      asteroid[n].turn+=asteroid[n].turnSpeed;
-      asteroid[n].posX+=asteroid[n].moveX;
-      asteroid[n].posY+=asteroid[n].moveY;
-      if (asteroid[n].posX>32767-2100) { asteroid[n].throttle=0; }
-      else if (asteroid[n].posX<-32768+2100) { asteroid[n].throttle=0; }
-      if (asteroid[n].posY>32767-2100) { asteroid[n].throttle=0; }
-      else if (asteroid[n].posY<-32768+2100) { asteroid[n].throttle=0; } }
+  for (int n=0;n<4;n++) {
+    if (asteroid[n].throttle==0) {
+      float angleA=0.017453f*random(0,360);
+      asteroid[n].throttle=random(40,70);
+      asteroid[n].moveX=cos(angleA)*asteroid[n].throttle-sin(angleA)*asteroid[n].throttle;
+      asteroid[n].moveY=sin(angleA)*asteroid[n].throttle+cos(angleA)*asteroid[n].throttle;
+      if (asteroid[n].posX>32767-2100 && asteroid[n].moveX>0) { asteroid[n].moveX=-asteroid[n].moveX; }
+      else if (asteroid[n].posX<-32768+2100 && asteroid[n].moveX<0) { asteroid[n].moveX=-asteroid[n].moveX; }
+      if (asteroid[n].posY>32767-2100 && asteroid[n].moveY>0) { asteroid[n].moveY=-asteroid[n].moveY; }
+      else if (asteroid[n].posY<-32768+2100 && asteroid[n].moveY<0) { asteroid[n].moveY=-asteroid[n].moveY; } }
+    doObject(asteroidData,asteroid[n].posX,asteroid[n].posY,asteroid[n].turn);
+    asteroid[n].turn+=asteroid[n].turnSpeed;
+    asteroid[n].posX+=asteroid[n].moveX;
+    asteroid[n].posY+=asteroid[n].moveY;
+    if (asteroid[n].posX>32767-2100) { asteroid[n].throttle=0; }
+    else if (asteroid[n].posX<-32768+2100) { asteroid[n].throttle=0; }
+    if (asteroid[n].posY>32767-2100) { asteroid[n].throttle=0; }
+    else if (asteroid[n].posY<-32768+2100) { asteroid[n].throttle=0; } }
 
-    if (adc.t && millis()>triggerTimer) { triggerTimer=millis()+1000;
-      for (int n=0;n<20;n++) { if (phaser[n].throttle==0) {
-        phaser[n].posX=ship.posX; phaser[n].posY=ship.posY;
-        phaser[n].moveX=cos(angle)*200-sin(angle)*200;
-        phaser[n].moveY=sin(angle)*200+cos(angle)*200;
-        phaser[n].turn=ship.turn; phaser[n].throttle=1; break; } } }
-    for (int n=0;n<20;n++) { if (phaser[n].throttle) {
-      doObject(phaserData,phaser[n].posX,phaser[n].posY,phaser[n].turn);
-      phaser[n].posX+=phaser[n].moveX; phaser[n].posY+=phaser[n].moveY;
-      if (phaser[n].posX>32767-2100) { phaser[n].throttle=0; }
-      else if (phaser[n].posX<-32768+2100) { phaser[n].throttle=0; }
-      if (phaser[n].posY>32767-2100) { phaser[n].throttle=0; }
-      else if (phaser[n].posY<-32768+2100) { phaser[n].throttle=0; } } }
+  if (adc.t && millis()>triggerTimer) { triggerTimer=millis()+1000;
+    for (int n=0;n<20;n++) { if (phaser[n].throttle==0) {
+      phaser[n].posX=ship.posX; phaser[n].posY=ship.posY;
+      phaser[n].moveX=cos(angle)*200-sin(angle)*200;
+      phaser[n].moveY=sin(angle)*200+cos(angle)*200;
+      phaser[n].turn=ship.turn; phaser[n].throttle=1; break; } } }
+  for (int n=0;n<20;n++) { if (phaser[n].throttle) {
+    doObject(phaserData,phaser[n].posX,phaser[n].posY,phaser[n].turn);
+    phaser[n].posX+=phaser[n].moveX; phaser[n].posY+=phaser[n].moveY;
+    if (phaser[n].posX>32767-2100) { phaser[n].throttle=0; }
+    else if (phaser[n].posX<-32768+2100) { phaser[n].throttle=0; }
+    if (phaser[n].posY>32767-2100) { phaser[n].throttle=0; }
+    else if (phaser[n].posY<-32768+2100) { phaser[n].throttle=0; } } }
 
-    do { dacWorker(); } while (dacCount>0); } }
+  static uint32_t dacTimer;
+  static uint8_t oldR=0,oldG=0,oldB=0;
+  for (int n=0;n<ildaCount;n++) {
+    while (micros()<=dacTimer) { } dacTimer=micros()+dacSpeed;
+    if (ilda[n].r!=oldR) { oldR=ilda[n].r; ledcWrite(channelRed,oldR); }
+    if (ilda[n].g!=oldG) { oldG=ilda[n].g; ledcWrite(channelGreen,oldG); }
+    if (ilda[n].b!=oldB) { oldB=ilda[n].b; ledcWrite(channelBlue,oldB); }
+    digitalWrite(csPin,LOW);
+    hspi->write16(ilda[n].x | 0b0011000000000000);
+    digitalWrite(csPin,HIGH);
+    digitalWrite(csPin,LOW);
+    hspi->write16(ilda[n].y | 0b1011000000000000);
+    digitalWrite(csPin,HIGH);
+    digitalWrite(ldacPin,LOW); digitalWrite(ldacPin,HIGH); } }

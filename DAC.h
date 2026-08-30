@@ -20,9 +20,11 @@ SPIClass *hspi = new SPIClass(HSPI);
 
 struct ildaStruct { uint16_t x; uint16_t y; uint8_t r; uint8_t g; uint8_t b; uint8_t s; };
 ildaStruct *ilda=(ildaStruct*)heap_caps_malloc(sizeof(ildaStruct)*1000000,MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-uint32_t ildaCount,paletteCount,dacCount,dacAvailable;
+uint32_t ildaCount,paletteCount,dacAvailable;
 uint16_t dacSpeed=50;
 uint8_t redBright=50,greenBright=50,blueBright=50,ildaSize=100;
+uint16_t x,y;
+uint8_t s,r,g,b;
 
 void initDAC() {
   pinMode(csPin,OUTPUT); digitalWrite(csPin,HIGH);
@@ -41,19 +43,17 @@ void colorOff() { ledcWrite(channelRed,0); ledcWrite(channelGreen,0); ledcWrite(
 void laserOn() { digitalWrite(lockPin,HIGH); colorOff(); digitalWrite(shutterPin,HIGH); }
 void laserOff() { digitalWrite(lockPin,LOW); colorOff(); digitalWrite(shutterPin,LOW); }
 
-void dacWorker() {
+void dacSet() {
   static uint32_t dacTimer;
   static uint8_t oldR=0,oldG=0,oldB=0;
-  if (micros()>=dacTimer) { dacTimer=micros()+dacSpeed;
-    if (ilda[dacCount].r!=oldR) { oldR=ilda[dacCount].r; ledcWrite(channelRed,oldR); }
-    if (ilda[dacCount].g!=oldG) { oldG=ilda[dacCount].g; ledcWrite(channelGreen,oldG); }
-    if (ilda[dacCount].b!=oldB) { oldB=ilda[dacCount].b; ledcWrite(channelBlue,oldB); }
-    digitalWrite(csPin,LOW);
-    hspi->write16(ilda[dacCount].x | 0b0011000000000000);
-    digitalWrite(csPin,HIGH);
-    digitalWrite(csPin,LOW);
-    hspi->write16(ilda[dacCount].y | 0b1011000000000000);
-    digitalWrite(csPin,HIGH);
-    digitalWrite(ldacPin,LOW); digitalWrite(ldacPin,HIGH);
-    dacCount++;
-    if (dacCount>=ildaCount) { dacCount=0; } } else { dacAvailable++; } }
+  while (micros()<=dacTimer) { } dacTimer=micros()+dacSpeed;
+  if (r!=oldR) { oldR=r; ledcWrite(channelRed,oldR); }
+  if (g!=oldG) { oldG=g; ledcWrite(channelGreen,oldG); }
+  if (b!=oldB) { oldB=b; ledcWrite(channelBlue,oldB); }
+  digitalWrite(csPin,LOW);
+  hspi->write16(x | 0b0011000000000000);
+  digitalWrite(csPin,HIGH);
+  digitalWrite(csPin,LOW);
+  hspi->write16(y | 0b1011000000000000);
+  digitalWrite(csPin,HIGH);
+  digitalWrite(ldacPin,LOW); digitalWrite(ldacPin,HIGH); }

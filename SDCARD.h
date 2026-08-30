@@ -4,15 +4,14 @@ File file;
 
 #define sdPinCS   15
 
-uint8_t buffer[32];
+uint8_t buffer[100000];
 
 void initSD() {
   SD.begin(sdPinCS); }
 
 void readILDA(String value) {
   Serial.print("Get File: "); Serial.println(value);
-  laserOff();
-  ildaCount=0; paletteCount=0; dacCount=0;
+  laserOn();
   initPalette();
   file=SD.open(value);
   while (file.available()) {
@@ -21,63 +20,63 @@ void readILDA(String value) {
       uint16_t count=(buffer[24]<<8)+(buffer[25]);
       if (format==0) {
         Serial.print("Format 0: "); Serial.println(count);
-        for (uint16_t n=0;n<count;n++) {
-          if (file.available()>=8) { file.read(buffer,8);
-            ilda[ildaCount].x=((int16_t)((float)ildaSize*(int16_t)((buffer[0]<<8)+buffer[1])/100.0f)+32768)>>4;
-            ilda[ildaCount].y=((int16_t)((float)ildaSize*(int16_t)((buffer[2]<<8)+buffer[3])/100.0f)+32768)>>4;
-            ilda[ildaCount].s=buffer[6];
-            ilda[ildaCount].r=palette[buffer[7]][0];
-            ilda[ildaCount].g=palette[buffer[7]][1];
-            ilda[ildaCount].b=palette[buffer[7]][2];
-            if (bitRead(ilda[ildaCount].s,6)) { ilda[ildaCount].r=0; ilda[ildaCount].g=0; ilda[ildaCount].b=0; }
-            ildaCount++; } } }
+        if (file.available()>=count*8) { file.read(buffer,count*8);
+          for (uint16_t n=0;n<count;n++) {
+            x=((int16_t)((float)ildaSize*(int16_t)((buffer[n*8+0]<<8)+buffer[n*8+1])/100.0f)+32768)>>4;
+            y=((int16_t)((float)ildaSize*(int16_t)((buffer[n*8+2]<<8)+buffer[n*8+3])/100.0f)+32768)>>4;
+            s=buffer[n*8+6];
+            r=palette[buffer[n*8+7]][0];
+            g=palette[buffer[n*8+7]][1];
+            b=palette[buffer[n*8+7]][2];
+            if (bitRead(s,6)) { r=0; g=0; b=0; }
+            dacSet(); } } }
       if (format==1) {
         Serial.print("Format 1: "); Serial.println(count);
-        for (uint16_t n=0;n<count;n++) {
-          if (file.available()>=6) { file.read(buffer,6);
-            ilda[ildaCount].x=((int16_t)((float)ildaSize*(int16_t)((buffer[0]<<8)+buffer[1])/100.0f)+32768)>>4;
-            ilda[ildaCount].y=((int16_t)((float)ildaSize*(int16_t)((buffer[2]<<8)+buffer[3])/100.0f)+32768)>>4;
-            ilda[ildaCount].s=buffer[4];
-            ilda[ildaCount].r=palette[buffer[5]][0];
-            ilda[ildaCount].g=palette[buffer[5]][1];
-            ilda[ildaCount].b=palette[buffer[5]][2];
-            if (bitRead(ilda[ildaCount].s,6)) { ilda[ildaCount].r=0; ilda[ildaCount].g=0; ilda[ildaCount].b=0; }
-            ildaCount++; } } }
+        if (file.available()>=count*6) { file.read(buffer,count*6);
+          for (uint16_t n=0;n<count;n++) {
+            x=((int16_t)((float)ildaSize*(int16_t)((buffer[n*6+0]<<8)+buffer[n*6+1])/100.0f)+32768)>>4;
+            y=((int16_t)((float)ildaSize*(int16_t)((buffer[n*6+2]<<8)+buffer[n*6+3])/100.0f)+32768)>>4;
+            s=buffer[n*6+4];
+            r=palette[buffer[n*6+5]][0];
+            g=palette[buffer[n*6+5]][1];
+            b=palette[buffer[n*6+5]][2];
+            if (bitRead(s,6)) { r=0; g=0; b=0; }
+            dacSet(); } } }
       if (format==2) {
         Serial.print("Format 2: "); Serial.println(count);
-        for (uint16_t n=0;n<count;n++) {
-          if (file.available()>=3) { file.read(buffer,3);
-            palette[paletteCount][0]=buffer[0];
-            palette[paletteCount][1]=buffer[1];
-            palette[paletteCount][2]=buffer[2];
+        paletteCount=0;
+        if (file.available()>=count*3) { file.read(buffer,count*3);
+          for (uint16_t n=0;n<count;n++) {
+            palette[paletteCount][0]=buffer[count*3+0];
+            palette[paletteCount][1]=buffer[count*3+1];
+            palette[paletteCount][2]=buffer[count*3+2];
             paletteCount++; } } }
       if (format==4) {
         Serial.print("Format 4: "); Serial.println(count);
-        for (uint16_t n=0;n<count;n++) {
-          if (file.available()>=10) { file.read(buffer,10);
-            ilda[ildaCount].x=((int16_t)((float)ildaSize*(int16_t)((buffer[0]<<8)+buffer[1])/100.0f)+32768)>>4;
-            ilda[ildaCount].y=((int16_t)((float)ildaSize*(int16_t)((buffer[2]<<8)+buffer[3])/100.0f)+32768)>>4;
-            ilda[ildaCount].s=buffer[6];
-            ilda[ildaCount].b=(float)buffer[7]*(float)blueBright/(float)100;
-            ilda[ildaCount].g=(float)buffer[8]*(float)greenBright/(float)100;
-            ilda[ildaCount].r=(float)buffer[9]*(float)redBright/(float)100;
-            if (bitRead(ilda[ildaCount].s,6)) { ilda[ildaCount].r=0; ilda[ildaCount].g=0; ilda[ildaCount].b=0; }
-            ildaCount++; } } }
+        if (file.available()>=count*10) { file.read(buffer,count*10);
+          for (uint16_t n=0;n<count;n++) {
+            x=((int16_t)((float)ildaSize*(int16_t)((buffer[n*10+0]<<8)+buffer[n*10+1])/100.0f)+32768)>>4;
+            y=((int16_t)((float)ildaSize*(int16_t)((buffer[n*10+2]<<8)+buffer[n*10+3])/100.0f)+32768)>>4;
+            s=buffer[n*10+6];
+            b=(float)buffer[n*10+7]*(float)blueBright/(float)100;
+            g=(float)buffer[n*10+8]*(float)greenBright/(float)100;
+            r=(float)buffer[n*10+9]*(float)redBright/(float)100;
+            if (bitRead(s,6)) { r=0; g=0; b=0; }
+            dacSet(); } } }
       if (format==5) {
         Serial.print("Format 5: "); Serial.println(count);
-        for (uint16_t n=0;n<count;n++) {
-          if (file.available()>=8) { file.read(buffer,8);
-            ilda[ildaCount].x=((int16_t)((float)ildaSize*(int16_t)((buffer[0]<<8)+buffer[1])/100.0f)+32768)>>4;
-            ilda[ildaCount].y=((int16_t)((float)ildaSize*(int16_t)((buffer[2]<<8)+buffer[3])/100.0f)+32768)>>4;
-            ilda[ildaCount].s=buffer[4];
-            ilda[ildaCount].b=(float)buffer[5]*(float)blueBright/(float)100;
-            ilda[ildaCount].g=(float)buffer[6]*(float)greenBright/(float)100;
-            ilda[ildaCount].r=(float)buffer[7]*(float)redBright/(float)100;
-            if (bitRead(ilda[ildaCount].s,6)) { ilda[ildaCount].r=0; ilda[ildaCount].g=0; ilda[ildaCount].b=0; }
-            ildaCount++; } } } } }
-  Serial.print("Points: "); Serial.println(ildaCount);
+        if (file.available()>=count*8) { file.read(buffer,count*8);
+          for (uint16_t n=0;n<count;n++) {
+            x=((int16_t)((float)ildaSize*(int16_t)((buffer[n*8+0]<<8)+buffer[n*8+1])/100.0f)+32768)>>4;
+            y=((int16_t)((float)ildaSize*(int16_t)((buffer[n*8+2]<<8)+buffer[n*8+3])/100.0f)+32768)>>4;
+            s=buffer[n*8+4];
+            b=(float)buffer[n*8+5]*(float)blueBright/(float)100;
+            g=(float)buffer[n*8+6]*(float)greenBright/(float)100;
+            r=(float)buffer[n*8+7]*(float)redBright/(float)100;
+            if (bitRead(s,6)) { r=0; g=0; b=0; }
+            dacSet(); } } } } }
   file.close();
-  laserOn(); }
+  laserOff(); }
 
 String readDir(String value) {
   Serial.print("Get Dir: "); Serial.println(value);

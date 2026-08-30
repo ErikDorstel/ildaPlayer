@@ -1,6 +1,7 @@
 #include <WebServer.h>
 
 WebServer server(80);
+uint8_t game=0;
 
 const char *rootIndex=R"(
 <!DOCTYPE html>
@@ -107,13 +108,13 @@ function id(id) { return document.getElementById(id); }
 
 void handleRoot() { server.send(200,"text/html",rootIndex); }
 void getDir() { server.send(200,"text/html",readDir(server.arg("dir"))); }
-void getFile() { server.send(200,"text/html",""); readILDA(server.arg("file")); }
+void getFile() { server.send(200,"text/html",""); game=0; readILDA(server.arg("file")); }
 void setSpeed() { server.send(200,"text/html",""); dacSpeed=server.arg("speed").toInt(); }
 void setRed() { server.send(200,"text/html",""); redBright=server.arg("red").toInt(); }
 void setGreen() { server.send(200,"text/html",""); greenBright=server.arg("green").toInt(); }
 void setBlue() { server.send(200,"text/html",""); blueBright=server.arg("blue").toInt(); }
 void setSize() { server.send(200,"text/html",""); ildaSize=server.arg("size").toInt(); }
-void getGame() { server.send(200,"text/html",""); startGame(); }
+void getGame() { server.send(200,"text/html",""); game=1; }
 
 void initServer() {
   server.on("/",handleRoot);
