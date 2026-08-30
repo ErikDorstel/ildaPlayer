@@ -1,9 +1,9 @@
 #include <SPI.h>
 
-#define ledPinRed    4
-#define ledPinGreen  5
-#define ledPinBlue   6
-#define shutterPin   7
+#define ledPinRed   38
+#define ledPinGreen 39
+#define ledPinBlue  40
+#define shutterPin  41
 #define channelRed   0
 #define channelGreen 1
 #define channelBlue  2

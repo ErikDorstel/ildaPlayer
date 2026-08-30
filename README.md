@@ -10,11 +10,11 @@ ESP32-S3 based ILDA Player
 * GPIO 17 - MOSI
 * GPIO 18 - MISO
 #### Colors
-* GPIO 4 - Red
-* GPIO 5 - Green
-* GPIO 6 - Blue
+* GPIO 38 - Red
+* GPIO 39 - Green
+* GPIO 40 - Blue
 #### Shutter
-* GPIO 7
+* GPIO 41
 #### Interlock Relais
 * GPIO 21
 #### SD Card
@@ -22,9 +22,14 @@ ESP32-S3 based ILDA Player
 * GPIO 12 - SCK
 * GPIO 13 - MISO
 * GPIO 15 - CS
-#### Joystick
+#### Joystick I
 * GPIO 1 - X
 * GPIO 2 - Y
+* GPIO 4 - Z
+* GPIO 5 - Trigger
+#### Joystick II
+* GPIO 6 - X
+* GPIO 7 - Y
 * GPIO 8 - Z
 * GPIO 9 - Trigger
 #### Development Hardware

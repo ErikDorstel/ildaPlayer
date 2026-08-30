@@ -64,12 +64,12 @@ void initGame() {
 void doGame() {
   static uint32_t triggerTimer;
   ildaCount=0;
-  getADC();
+  getADC1();
 
-  if (adc.x>500) { ship.turn-=0.1; }
-  if (adc.x<-500) { ship.turn+=0.1; }
-  if (adc.y>500) { ship.throttle+=3; }
-  else if (adc.y<-500) { ship.throttle-=3; }
+  if (adc1.x>500) { ship.turn-=0.1; }
+  if (adc1.x<-500) { ship.turn+=0.1; }
+  if (adc1.y>500) { ship.throttle+=3; }
+  else if (adc1.y<-500) { ship.throttle-=3; }
   else { ship.throttle-=0.5; }
   if (ship.throttle<0) { ship.throttle=0; }
   if (ship.throttle>100) { ship.throttle=100; }
@@ -82,7 +82,7 @@ void doGame() {
   else if (ship.posX<-32768+1100) { ship.posX=-32768+1100; }
   if (ship.posY>32767-1100) { ship.posY=32767-1100; }
   else if (ship.posY<-32768+1100) { ship.posY=-32768+1100; }
-  if (adc.y>100) { doObject(shipEngineData,ship.posX,ship.posY,ship.turn); }
+  if (adc1.y>100) { doObject(shipEngineData,ship.posX,ship.posY,ship.turn); }
   else { doObject(shipData,ship.posX,ship.posY,ship.turn); }
 
   for (int n=0;n<4;n++) {
@@ -104,7 +104,7 @@ void doGame() {
     if (asteroid[n].posY>32767-2100) { asteroid[n].throttle=0; }
     else if (asteroid[n].posY<-32768+2100) { asteroid[n].throttle=0; } }
 
-  if (adc.t && millis()>triggerTimer) { triggerTimer=millis()+1000;
+  if (adc1.t && millis()>triggerTimer) { triggerTimer=millis()+1000;
     for (int n=0;n<20;n++) { if (phaser[n].throttle==0) {
       phaser[n].posX=ship.posX; phaser[n].posY=ship.posY;
       phaser[n].moveX=cos(angle)*200-sin(angle)*200;
