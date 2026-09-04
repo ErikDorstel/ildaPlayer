@@ -1,0 +1,3 @@
+void initDogfight() { }
+
+void doDogfight() { }

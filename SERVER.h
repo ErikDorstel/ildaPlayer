@@ -87,7 +87,8 @@ function onSelectGreen(event) { requestAJAX("setGreen?green="+event.value); }
 function onSelectBlue(event) { requestAJAX("setBlue?blue="+event.value); }
 function onSelectSize(event) { requestAJAX("setSize?size="+event.value); }
 function onReloadIlda(event) { if (id("selectDir").selectedOptions[0]) { name=id("selectDir").selectedOptions[0].value; if (name.toLowerCase().endsWith(".ild")) { requestAJAX("getFile?file="+name); } } }
-function onGame(event) { requestAJAX("getGame"); }
+function onAsteroids(event) { requestAJAX("getAsteroids"); }
+function onDogfight(event) { requestAJAX("getDogfight"); }
 function id(id) { return document.getElementById(id); }
 </script></head>
 <body onload="webUIinit();">
@@ -100,8 +101,9 @@ function id(id) { return document.getElementById(id); }
   <select size="10" id="selectSize" onchange="onSelectSize(this);"></select>
 </td><td>
   <ul>
-    <li><button type="button" onclick="onReloadIlda();">Reload</button></li>
-    <li><button type="button" onclick="onGame();">Game</button></li>
+    <li><button type="button" onclick="onReloadIlda();">Reload ILDA</button></li>
+    <li><button type="button" onclick="onAsteroids();">Asteroids</button></li>
+    <li><button type="button" onclick="onDogfight();">Dogfight</button></li>
   </ul>
 </td></tr></table>
 </body></html>)";
@@ -114,7 +116,8 @@ void setRed() { server.send(200,"text/html",""); redBright=server.arg("red").toI
 void setGreen() { server.send(200,"text/html",""); greenBright=server.arg("green").toInt(); }
 void setBlue() { server.send(200,"text/html",""); blueBright=server.arg("blue").toInt(); }
 void setSize() { server.send(200,"text/html",""); ildaSize=server.arg("size").toInt(); }
-void getGame() { server.send(200,"text/html",""); game=1; }
+void getAsteroids() { server.send(200,"text/html",""); game=1; }
+void getDogfight() { server.send(200,"text/html",""); game=3; }
 
 void initServer() {
   server.on("/",handleRoot);
@@ -125,7 +128,8 @@ void initServer() {
   server.on("/setGreen",setGreen);
   server.on("/setBlue",setBlue);
   server.on("/setSize",setSize);
-  server.on("/getGame",getGame);
+  server.on("/getAsteroids",getAsteroids);
+  server.on("/getDogfight",getDogfight);
   server.begin(); }
 
 void serverWorker() {
