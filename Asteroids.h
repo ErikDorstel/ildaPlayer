@@ -16,7 +16,7 @@ void setPixel(int16_t x,int16_t y,uint8_t r,uint8_t g,uint8_t b) {
 
 void doLine(int xend, int yend,uint8_t r,uint8_t g,uint8_t b) {
   static int xstart,ystart;
-  int x, y, t, dx, dy, incx, incy, pdx, pdy, ddx, ddy, deltaslowdirection, deltafastdirection, err, step=200;
+  int x, y, t, dx, dy, incx, incy, pdx, pdy, ddx, ddy, deltaslowdirection, deltafastdirection, err, step=500;
   if (r==0 && g==0 && b==0) { step=1000; }
   dx = xend - xstart;
   dy = yend - ystart;
