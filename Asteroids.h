@@ -14,7 +14,7 @@ void setPixel(int16_t x,int16_t y,uint8_t r,uint8_t g,uint8_t b) {
   ilda[ildaCount].b=(float)b*(float)blueBright/(float)100;
   ildaCount++; }
 
-void doLine(int xend, int yend,uint8_t r,uint8_t g,uint8_t b) {
+void doLine(int xend,int yend,uint8_t r,uint8_t g,uint8_t b) {
   static int xstart,ystart;
   int x, y, t, dx, dy, incx, incy, pdx, pdy, ddx, ddy, deltaslowdirection, deltafastdirection, err, step=500;
   if (r==0 && g==0 && b==0) { step=1000; }
@@ -117,6 +117,13 @@ void doAsteroids() {
     else if (phaser[n].posX<-32768+2100) { phaser[n].throttle=0; }
     if (phaser[n].posY>32767-2100) { phaser[n].throttle=0; }
     else if (phaser[n].posY<-32768+2100) { phaser[n].throttle=0; } } }
+
+  ilda[ildaCount].x=ilda[ildaCount-1].x;
+  ilda[ildaCount].y=ilda[ildaCount-1].y;
+  ilda[ildaCount].r=0;
+  ilda[ildaCount].g=0;
+  ilda[ildaCount].b=0;
+  ildaCount++;
 
   static uint32_t dacTimer;
   static uint8_t oldR=0,oldG=0,oldB=0;
