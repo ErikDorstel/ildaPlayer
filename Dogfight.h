@@ -12,18 +12,18 @@ void doDogfight() {
   ildaCount=0;
   getADC1(); getADC2();
 
-  doLine(-5000,20000,0,0,0);
-  doLine(-5000,5000,0,0,255);
-  doLine(-20000,5000,0,0,255);
-  doLine(-20000,-5000,0,0,0);
-  doLine(-5000,-5000,0,0,255);
-  doLine(-5000,-20000,0,0,255),
-  doLine(5000,-20000,0,0,0);
-  doLine(5000,-5000,0,0,255);
-  doLine(20000,-5000,0,0,255);
-  doLine(20000,5000,0,0,0);
-  doLine(5000,5000,0,0,255);
-  doLine(5000,20000,0,0,255);
+  doLine(-5000,20000,0,0,0,1000);
+  doLine(-5000,5000,0,0,255,1000);
+  doLine(-20000,5000,0,0,255,1000);
+  doLine(-20000,-5000,0,0,0,1000);
+  doLine(-5000,-5000,0,0,255,1000);
+  doLine(-5000,-20000,0,0,255,1000),
+  doLine(5000,-20000,0,0,0,1000);
+  doLine(5000,-5000,0,0,255,1000);
+  doLine(20000,-5000,0,0,255,1000);
+  doLine(20000,5000,0,0,0,1000);
+  doLine(5000,5000,0,0,255,1000);
+  doLine(5000,20000,0,0,255,1000);
 
   if (adc1.x>500) { ship1.turn-=0.1; }
   if (adc1.x<-500) { ship1.turn+=0.1; }
@@ -91,12 +91,7 @@ void doDogfight() {
     if (phaser2[n].posY>32767-2100) { phaser2[n].throttle=0; }
     else if (phaser2[n].posY<-32768+2100) { phaser2[n].throttle=0; } } }
 
-  ilda[ildaCount].x=ilda[ildaCount-1].x;
-  ilda[ildaCount].y=ilda[ildaCount-1].y;
-  ilda[ildaCount].r=0;
-  ilda[ildaCount].g=0;
-  ilda[ildaCount].b=0;
-  ildaCount++;
+  setLastPixel();
 
   static uint32_t dacTimer;
   static uint8_t oldR=0,oldG=0,oldB=0;
