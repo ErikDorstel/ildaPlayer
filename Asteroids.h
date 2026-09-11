@@ -86,11 +86,11 @@ void doAsteroids() {
   ship.moveY=sin(angle)*ship.throttle+cos(angle)*ship.throttle;
   ship.posX+=ship.moveX;
   ship.posY+=ship.moveY;
-  if (ship.posX>32767-1100) { ship.posX=32767-1100; }
-  else if (ship.posX<-32768+1100) { ship.posX=-32768+1100; }
-  if (ship.posY>32767-1100) { ship.posY=32767-1100; }
-  else if (ship.posY<-32768+1100) { ship.posY=-32768+1100; }
-  if (adc1.y>100) { doObject(shipEngineData,ship.posX,ship.posY,ship.turn); }
+  if (ship.posX>31000) { ship.posX=31000; }
+  else if (ship.posX<-31000) { ship.posX=-31000; }
+  if (ship.posY>31000) { ship.posY=31000; }
+  else if (ship.posY<-31000) { ship.posY=-31000; }
+  if (adc1.y>500) { doObject(shipEngineData,ship.posX,ship.posY,ship.turn); }
   else { doObject(shipData,ship.posX,ship.posY,ship.turn); }
 
   for (int n=0;n<4;n++) {
@@ -99,18 +99,18 @@ void doAsteroids() {
       asteroid[n].throttle=random(40,70);
       asteroid[n].moveX=cos(angleA)*asteroid[n].throttle-sin(angleA)*asteroid[n].throttle;
       asteroid[n].moveY=sin(angleA)*asteroid[n].throttle+cos(angleA)*asteroid[n].throttle;
-      if (asteroid[n].posX>32767-2100 && asteroid[n].moveX>0) { asteroid[n].moveX=-asteroid[n].moveX; }
-      else if (asteroid[n].posX<-32768+2100 && asteroid[n].moveX<0) { asteroid[n].moveX=-asteroid[n].moveX; }
-      if (asteroid[n].posY>32767-2100 && asteroid[n].moveY>0) { asteroid[n].moveY=-asteroid[n].moveY; }
-      else if (asteroid[n].posY<-32768+2100 && asteroid[n].moveY<0) { asteroid[n].moveY=-asteroid[n].moveY; } }
+      if (asteroid[n].posX>30000 && asteroid[n].moveX>0) { asteroid[n].moveX=-asteroid[n].moveX; }
+      else if (asteroid[n].posX<-30000 && asteroid[n].moveX<0) { asteroid[n].moveX=-asteroid[n].moveX; }
+      if (asteroid[n].posY>30000 && asteroid[n].moveY>0) { asteroid[n].moveY=-asteroid[n].moveY; }
+      else if (asteroid[n].posY<-30000 && asteroid[n].moveY<0) { asteroid[n].moveY=-asteroid[n].moveY; } }
     doObject(asteroidData,asteroid[n].posX,asteroid[n].posY,asteroid[n].turn);
     asteroid[n].turn+=asteroid[n].turnSpeed;
     asteroid[n].posX+=asteroid[n].moveX;
     asteroid[n].posY+=asteroid[n].moveY;
-    if (asteroid[n].posX>32767-2100) { asteroid[n].throttle=0; }
-    else if (asteroid[n].posX<-32768+2100) { asteroid[n].throttle=0; }
-    if (asteroid[n].posY>32767-2100) { asteroid[n].throttle=0; }
-    else if (asteroid[n].posY<-32768+2100) { asteroid[n].throttle=0; } }
+    if (asteroid[n].posX>30000) { asteroid[n].throttle=0; }
+    else if (asteroid[n].posX<-30000) { asteroid[n].throttle=0; }
+    if (asteroid[n].posY>30000) { asteroid[n].throttle=0; }
+    else if (asteroid[n].posY<-30000) { asteroid[n].throttle=0; } }
 
   if (adc1.t && millis()>triggerTimer) { triggerTimer=millis()+1000;
     for (int n=0;n<20;n++) { if (phaser[n].throttle==0) {
@@ -121,10 +121,10 @@ void doAsteroids() {
   for (int n=0;n<20;n++) { if (phaser[n].throttle) {
     doObject(phaserData,phaser[n].posX,phaser[n].posY,phaser[n].turn);
     phaser[n].posX+=phaser[n].moveX; phaser[n].posY+=phaser[n].moveY;
-    if (phaser[n].posX>32767-2100) { phaser[n].throttle=0; }
-    else if (phaser[n].posX<-32768+2100) { phaser[n].throttle=0; }
-    if (phaser[n].posY>32767-2100) { phaser[n].throttle=0; }
-    else if (phaser[n].posY<-32768+2100) { phaser[n].throttle=0; } } }
+    if (phaser[n].posX>30000) { phaser[n].throttle=0; }
+    else if (phaser[n].posX<-30000) { phaser[n].throttle=0; }
+    if (phaser[n].posY>30000) { phaser[n].throttle=0; }
+    else if (phaser[n].posY<-30000) { phaser[n].throttle=0; } } }
 
   setLastPixel();
 
