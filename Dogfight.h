@@ -78,10 +78,10 @@ void doDogfight() {
     else if (phaser1[n].posX<-4850 && phaser1[n].posX>-5150) {
       if (phaser1[n].posY>4850 && phaser1[n].posY<20150) { phaser1[n].moveX=-phaser1[n].moveX; phaser1[n].posX=-5000; }
       else if (phaser1[n].posY<-4850 && phaser1[n].posY>-20150) { phaser1[n].moveX=-phaser1[n].moveX; phaser1[n].posX=-5000; } }
-    if (phaser1[n].posY>4850 && phaser1[n].posY<5150) {
+    else if (phaser1[n].posY>4850 && phaser1[n].posY<5150) {
       if (phaser1[n].posX>4850 && phaser1[n].posX<20150) { phaser1[n].moveY=-phaser1[n].moveY; phaser1[n].posY=5000; }
       else if (phaser1[n].posX<-4850 && phaser1[n].posX>-20150) { phaser1[n].moveY=-phaser1[n].moveY; phaser1[n].posY=5000; } }
-    if (phaser1[n].posY<-4850 && phaser1[n].posY>-5150) {
+    else if (phaser1[n].posY<-4850 && phaser1[n].posY>-5150) {
       if (phaser1[n].posX>4850 && phaser1[n].posX<20150) { phaser1[n].moveY=-phaser1[n].moveY; phaser1[n].posY=-5000; }
       else if (phaser1[n].posX<-4850 && phaser1[n].posX>-20150) { phaser1[n].moveY=-phaser1[n].moveY; phaser1[n].posY=-5000; } }
     if (phaser1[n].posX>30000) { phaser1[n].throttle=0; }
@@ -104,10 +104,10 @@ void doDogfight() {
     else if (phaser2[n].posX<-4850 && phaser2[n].posX>-5150) {
       if (phaser2[n].posY>4850 && phaser2[n].posY<20150) { phaser2[n].moveX=-phaser2[n].moveX; phaser2[n].posX=-5000; }
       else if (phaser2[n].posY<-4850 && phaser2[n].posY>-20150) { phaser2[n].moveX=-phaser2[n].moveX; phaser2[n].posX=-5000; } }
-    if (phaser2[n].posY>4850 && phaser2[n].posY<5150) {
+    else if (phaser2[n].posY>4850 && phaser2[n].posY<5150) {
       if (phaser2[n].posX>4850 && phaser2[n].posX<20150) { phaser2[n].moveY=-phaser2[n].moveY; phaser2[n].posY=5000; }
       else if (phaser2[n].posX<-4850 && phaser2[n].posX>-20150) { phaser2[n].moveY=-phaser2[n].moveY; phaser2[n].posY=5000; } }
-    if (phaser2[n].posY<-4850 && phaser2[n].posY>-5150) {
+    else if (phaser2[n].posY<-4850 && phaser2[n].posY>-5150) {
       if (phaser2[n].posX>4850 && phaser2[n].posX<20150) { phaser2[n].moveY=-phaser2[n].moveY; phaser2[n].posY=-5000; }
       else if (phaser2[n].posX<-4850 && phaser2[n].posX>-20150) { phaser2[n].moveY=-phaser2[n].moveY; phaser2[n].posY=-5000; } }
     if (phaser2[n].posX>30000) { phaser2[n].throttle=0; }

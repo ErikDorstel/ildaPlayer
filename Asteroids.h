@@ -4,7 +4,7 @@ int16_t shipEngineData[][5]={{5,0,0,0,0},{0,1000,0,0,0},{500,-1000,0,255,0},{-50
 struct asteroidStruct { float posX; float posY; float moveX; float moveY; float throttle; float turn; float turnSpeed; } asteroid[4];
 int16_t asteroidData[][5]={{10,0,0,0,0},{0,2000,0,0,0},{1500,1000,0,0,255},{2000,-500,0,0,255},{500,-2000,0,0,255},{-800,-1900,0,0,255},{-1800,-1000,0,0,255},{-2000,500,0,0,255},{-600,1400,0,0,255},{0,2000,0,0,255}};
 struct phaserStruct { float posX; float posY; float moveX; float moveY; float throttle; float turn; } phaser[20];
-int16_t phaserData[][5]={{3,0,0,0,0},{0,1000,0,0,0},{0,2000,255,0,0}};
+int16_t phaserData[][5]={{3,0,0,0,0},{0,-500,0,0,0},{0,500,255,0,0}};
 
 void setPixel(int16_t x,int16_t y,uint8_t r,uint8_t g,uint8_t b) {
   ilda[ildaCount].x=((int16_t)((float)ildaSize*(int16_t)(x)/100.0f)+32768)>>4;
