@@ -1,5 +1,6 @@
 #include "ADC.h"
 #include "DAC.h"
+#include "SOUND.h"
 #include "PALETTE.h"
 #include "SDCARD.h"
 #include "WLAN.h"
@@ -11,6 +12,7 @@ void setup() {
   Serial.begin(115200);
   initADC();
   initDAC();
+  initSound();
   initSD();
   initWLAN();
   initServer();
@@ -22,4 +24,5 @@ void loop() {
   if (game==3) { laserOn(); initDogfight(); game=4; }
   if (game==4) { doDogfight(); }
   serverWorker();
-  wlanWorker(); }
+  wlanWorker();
+  soundWorker(); }
