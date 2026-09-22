@@ -32,6 +32,9 @@ ESP32-S3 based ILDA Player
 * GPIO 7 - Y
 * GPIO 8 - Z
 * GPIO 9 - Trigger
+#### Audio Out
+* GPIO 47
+* GPIO 48
 #### Development Hardware
 ![IMAGE ALT TEXT HERE](documentation/ildaPlayer_a.png)
 #### Schematic
