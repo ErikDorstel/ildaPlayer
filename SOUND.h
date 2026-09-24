@@ -6,7 +6,7 @@
 #define audioMiddle  4095
 
 uint16_t note[128];
-uint8_t entertainer[]={50,255,0,86,1,88,1,84,1,81,3,83,1,79,2,74,1,76,1,72,1,69,3,71,1,67,2,74,1,76,1,72,1,69,3,71,1,69,1,70,1,67,2,67,2,74,1,75,1,255,20};
+uint8_t elise[]={38,255,0,76,2,75,2,76,2,75,2,76,2,71,2,74,2,72,2,69,4,60,2,64,2,69,2,71,4,64,2,68,2,71,2,72,4,255,20};
 
 void initSound() {
   ledcAttachPin(pinSoundA,channelSoundA); ledcWrite(channelSoundA,0);
@@ -17,9 +17,9 @@ void soundWorker() {
   static uint32_t soundTimer;
   static uint8_t pointer=1;
   if (millis()>=soundTimer) {
-    if (entertainer[pointer]==255) { if (entertainer[pointer+1]==0) { ledcWrite(channelSoundA,audioMiddle); ledcWrite(channelSoundB,audioMiddle); }
+    if (elise[pointer]==255) { if (elise[pointer+1]==0) { ledcWrite(channelSoundA,audioMiddle); ledcWrite(channelSoundB,audioMiddle); }
       else { ledcWrite(channelSoundA,0); ledcWrite(channelSoundB,0); } }
-    else { ledcSetup(channelSoundA,note[entertainer[pointer]],audioDepth);
-           ledcSetup(channelSoundB,note[entertainer[pointer]-24],audioDepth); }
-    soundTimer=millis()+(250*entertainer[pointer+1]);
-    pointer+=2; if (pointer>entertainer[0]) { pointer=1; } } }
+    else { ledcSetup(channelSoundA,note[elise[pointer]],audioDepth);
+           ledcSetup(channelSoundB,note[elise[pointer]-24],audioDepth); }
+    soundTimer=millis()+(100*elise[pointer+1]);
+    pointer+=2; if (pointer>elise[0]) { pointer=1; } } }
